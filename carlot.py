@@ -5,10 +5,21 @@ from usedcar import UsedCar
 class Carlot:
 
     def __init__(self):
-        pass
+        self.inventory = self.get_inventory()
 
     def get_inventory(self):
-        pass
+        cars = []
+        with open('inventory.csv', 'r') as csv_file:
+            reader = csv.DictReader(csv_file)
+            for row in reader:
+                car = None
+                if row["new"] == 'true':
+                    car = NewCar(**dict(row))
+                else:
+                    car = UsedCar(**dict(row)) 
+                cars.append(car)     
+        return cars
 
     def hold_sale(self):
-        pass
+        for car in self.inventory:
+            car.advertise()
